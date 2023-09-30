@@ -21,7 +21,7 @@ namespace A_DAL.IRepositories
         // AC mặc định là public, đối với các cái khác là private
         // 1. Các phương thức Lấy dữ liệu từ DB
         IEnumerable<Child> GetAllChild(); // IEnumerable là kiểu dữ liệu dạng tập hợp
-        List<Child> GetChildByName();
+        List<Child> GetChildByName(string name);
         // 2. Phương thức tạo mới đối tượng - Luồng hoạt động như sau:
         /*
          * 1- Lấy dữ liệu từ form
