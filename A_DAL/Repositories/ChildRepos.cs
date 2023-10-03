@@ -21,12 +21,29 @@ namespace A_DAL.Repositories
         }
         public bool CreateChild(Child child)
         {
-            return true;
+            try
+            {
+                _context.Children.Add(child); _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public bool DeleteChild(Guid ID)
+        public bool DeleteChild(int ID)
         {
-            return true;
+            try
+            {
+                var deleteItem = _context.Children.Find(ID); // Find(ID) chỉ dùng cho khóa chính
+                _context.Children.Remove(deleteItem); _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Child> GetAllChild()

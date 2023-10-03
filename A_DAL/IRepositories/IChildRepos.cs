@@ -49,7 +49,7 @@ namespace A_DAL.IRepositories
          * 3- Sử dụng EF core để ánh xạ danh sách đó lên DB (lưu vào db sau khi đã xóa)
          * 4- Thông báo
          */
-        bool DeleteChild(Guid ID);    // Có thể truyền cả đối tượng vào 
+        bool DeleteChild(int ID);    // Có thể truyền cả đối tượng vào 
         // ID chính là nằm trong đối tượng Child được truyền vào trong hàm
         // Đối tượng Child được được vào này lại được lấy từ Form
         // Form sẽ truyền qua BUS

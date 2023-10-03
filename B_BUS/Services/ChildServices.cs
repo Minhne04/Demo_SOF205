@@ -24,5 +24,21 @@ namespace B_BUS.Services
         {
             return _repos.GetChildByName(name).ToList();
         }
+        public bool AddNewChild(string name, string age, string address, bool sex, int parentID) // truyền vào các thuộc tính
+        {
+            var child = new Child
+            {
+                Name = name,
+                Age = Convert.ToInt32(age),
+                Address = address,
+                Sex = sex,
+                ParentId = parentID
+
+            };
+            return _repos.CreateChild(child);
+        }
+        public bool DeleteChild(int Id) { 
+            return _repos.DeleteChild(Id);  
+        }
     }
 }
