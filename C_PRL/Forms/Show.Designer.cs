@@ -58,18 +58,19 @@
             // dtg_Show
             // 
             this.dtg_Show.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtg_Show.Location = new System.Drawing.Point(12, 78);
+            this.dtg_Show.Location = new System.Drawing.Point(12, 332);
             this.dtg_Show.Name = "dtg_Show";
             this.dtg_Show.RowHeadersWidth = 51;
             this.dtg_Show.RowTemplate.Height = 29;
-            this.dtg_Show.Size = new System.Drawing.Size(906, 416);
+            this.dtg_Show.Size = new System.Drawing.Size(906, 339);
             this.dtg_Show.TabIndex = 2;
+            this.dtg_Show.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtg_Show_CellContentClick);
             // 
             // Show
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(939, 502);
+            this.ClientSize = new System.Drawing.Size(939, 683);
             this.Controls.Add(this.dtg_Show);
             this.Controls.Add(this.tbt_Search);
             this.Controls.Add(this.btn_Show);
