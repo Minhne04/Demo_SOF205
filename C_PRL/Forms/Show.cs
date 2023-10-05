@@ -1,4 +1,5 @@
-﻿using B_BUS.Services;
+﻿using A_DAL.Models;
+using B_BUS.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -115,6 +116,24 @@ namespace C_PRL.Forms
             if(deleteResult) MessageBox.Show("Xóa thành công");
             else MessageBox.Show("Thất bại");
             LoadData(_service.GetAllChild());
+        }
+
+        private void btn_Edit_Click(object sender, EventArgs e)
+        {
+            string name = tbt_Name.Text;
+            string age = tbt_Age.Text;
+            string address = tbt_Address.Text;
+            bool sex = rb_Male.Checked;
+            int Id = selectedID; // id đã được lấy ra mỗi lần cell click
+            if (_service.UpdateChild(Id, name, age, address, sex, 1))// fix cứng parenID là 1
+            {
+                MessageBox.Show("Sửa thành công");
+                LoadData(_service.GetAllChild());
+            }
+            else
+            {
+                MessageBox.Show("Sửa thất bại, mời kiểm tra lại");
+            }
         }
     }
 }

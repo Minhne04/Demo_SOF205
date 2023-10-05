@@ -65,7 +65,24 @@ namespace A_DAL.Repositories
 
         public bool UpdateChild(Child child)
         {
-            return true;
+            try
+            { // Để update thì ta phải tìm ra được Child cần update
+                var updateChild = _context.Children.Find(child.ChildId);
+                // Update các thuộc tính
+                updateChild.Name = child.Name;
+                updateChild.Address = child.Address;
+                updateChild.Age = child.Age;
+                updateChild.Sex = child.Sex;
+                updateChild.ParentId = child.ParentId;
+                // Thực hiện thay đổi trên DBSet và DB
+                _context.Children.Update(updateChild);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

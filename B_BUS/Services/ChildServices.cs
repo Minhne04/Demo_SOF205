@@ -40,5 +40,19 @@ namespace B_BUS.Services
         public bool DeleteChild(int Id) { 
             return _repos.DeleteChild(Id);  
         }
+        public bool UpdateChild(int Id, string name, string age, string address,
+            bool sex, int parentID)
+        {
+            Child child = new Child
+            {
+                ChildId = Id,
+                Name = name,
+                Age = Convert.ToInt32(age),
+                Address = address,
+                Sex = sex,
+                ParentId = parentID
+            };
+            return _repos.UpdateChild(child);
+        }
     }
 }
