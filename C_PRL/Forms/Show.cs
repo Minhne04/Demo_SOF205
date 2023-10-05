@@ -1,5 +1,6 @@
 ﻿using A_DAL.Models;
 using B_BUS.Services;
+using B_BUS.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -103,6 +104,12 @@ namespace C_PRL.Forms
             string address = tbt_Address.Text;
             bool sex = rb_Male.Checked;
             int parentID = 1; // gán cứng tạm hôm sau tính tiếp
+            // Validate trước khi thêm
+            if(!Validates.ValidateInt(age) || !Validates.ValidateString(name))
+            {
+                MessageBox.Show("Hãy kiểm tra lại dữ liệu"); 
+                return; // return để dừng luôn hành động
+            }
             bool add = _service.AddNewChild(name, age, address, sex, parentID);
             if (add) MessageBox.Show("Thêm thành công!");
             else MessageBox.Show("Thất bại");
@@ -111,11 +118,19 @@ namespace C_PRL.Forms
 
         private void btn_Delete_Click(object sender, EventArgs e)
         {
-            // Lấy được ID cần xóa => Cột đã bị ẩn của datagridview 
-            var deleteResult = _service.DeleteChild(selectedID);
-            if(deleteResult) MessageBox.Show("Xóa thành công");
-            else MessageBox.Show("Thất bại");
-            LoadData(_service.GetAllChild());
+            DialogResult = MessageBox.Show("Bạn có muốn xóa không?", "Xác nhận",
+                MessageBoxButtons.YesNoCancel);
+            if(DialogResult == DialogResult.Yes)
+            {
+                // Lấy được ID cần xóa => Cột đã bị ẩn của datagridview 
+                var deleteResult = _service.DeleteChild(selectedID);
+                if (deleteResult) MessageBox.Show("Xóa thành công");
+                else MessageBox.Show("Thất bại");
+                LoadData(_service.GetAllChild());
+            }else
+            {
+                return;
+            }        
         }
 
         private void btn_Edit_Click(object sender, EventArgs e)
