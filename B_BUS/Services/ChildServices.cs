@@ -1,5 +1,6 @@
 ﻿using A_DAL.Models;
 using A_DAL.Repositories;
+using B_BUS.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace B_BUS.Services
     public class ChildServices
     {
         ChildRepos _repos = new ChildRepos();
+        ParentRepos _prepos = new ParentRepos();
         public ChildServices() { }
         public ChildServices(ChildRepos repos)
         {
@@ -37,8 +39,9 @@ namespace B_BUS.Services
             };
             return _repos.CreateChild(child);
         }
-        public bool DeleteChild(int Id) { 
-            return _repos.DeleteChild(Id);  
+        public bool DeleteChild(int Id)
+        {
+            return _repos.DeleteChild(Id);
         }
         public bool UpdateChild(int Id, string name, string age, string address,
             bool sex, int parentID)
@@ -53,6 +56,40 @@ namespace B_BUS.Services
                 ParentId = parentID
             };
             return _repos.UpdateChild(child);
+        }
+        // Cách 2: Sử dụng dynamic là kiểu trả về (làm được nhưng phải rất cẩn thận trong
+        // việc xác định thuộc tính cần dùng)
+        // Về cơ bản cách này và cách đầu tiên có cùng 1 logic nhưng nếu chúng ta sử dụng
+        // kiểu dữ liệu là dynamic thì chúng ta có thể áp dụng cho mô hình 3 lớp vì chúng ta
+        // xử lý dữ liệu và logic ở các lớp DAL và BUS chứ không hề động đến lớp PRL
+        public dynamic GetChildsWithParentName()
+        {
+            var joinData = from child in _repos.GetAllChild()
+                           join parent in _prepos.GetParents()
+                           on child.ParentId equals parent.ParentId
+                           select new
+                           {
+                               Name = child.Name,
+                               Address = child.Address,
+                               Age = child.Age,
+                               ParentName = parent.Name
+                           };
+            return joinData.ToList();
+        }
+        // Cách 3: Sử dụng ViewModel để làm kiểu dữ liệu trả về
+        public List<ChildViewModel> GetChildModels()
+        {
+            var joinData = from child in _repos.GetAllChild()
+                           join parent in _prepos.GetParents()
+                           on child.ParentId equals parent.ParentId
+                           select new ChildViewModel
+                           {
+                               Name = child.Name,
+                               Address = child.Address,
+                               Age = child.Age,
+                               ParentName = parent.Name
+                           };
+            return joinData.ToList();
         }
     }
 }

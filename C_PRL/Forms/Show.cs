@@ -16,6 +16,7 @@ namespace C_PRL.Forms
     public partial class Show : Form
     {
         ChildServices _service = new ChildServices();
+        ParentServices _pservice = new ParentServices();
         int selectedID = -1; // Tạo 1 thuộc tính ID để khi chọn vào 1 row bất kì ta lấy được ID
         public Show()
         {
@@ -25,7 +26,24 @@ namespace C_PRL.Forms
 
         private void btn_Show_Click(object sender, EventArgs e)
         {
-            LoadData(_service.GetAllChild());
+            // Cách 1 dùng anonymous type
+            //var listChild = _service.GetAllChild(); // Lấy ra tất cả child
+            //var listParent = _pservice.GetAllParents(); // Lấy ra tất cả parent
+            //// Join dữ liệu sử dụng anonymous
+            //var joinData = from child in listChild
+            //               join parent in listParent
+            //               on child.ParentId equals parent.ParentId
+            //               select new
+            //               {
+            //                   Name = child.Name,
+            //                   Address = child.Address,
+            //                   Age = child.Age,
+            //                   ParentName = parent.Name
+            //               };
+            var joinData = _service.GetChildsWithParentName();
+            dtg_Show.DataSource = joinData;
+            //dtg_Show.DataSource = _service.GetAllChild();
+            //LoadData(_service.GetAllChild());
         }
 
         public void LoadData(dynamic data) // dynamic là kiểu dữ liệu linh hoạt cho phép nhận mọi dữ liệu
@@ -105,9 +123,9 @@ namespace C_PRL.Forms
             bool sex = rb_Male.Checked;
             int parentID = 1; // gán cứng tạm hôm sau tính tiếp
             // Validate trước khi thêm
-            if(!Validates.ValidateInt(age) || !Validates.ValidateString(name))
+            if (!Validates.ValidateInt(age) || !Validates.ValidateString(name))
             {
-                MessageBox.Show("Hãy kiểm tra lại dữ liệu"); 
+                MessageBox.Show("Hãy kiểm tra lại dữ liệu");
                 return; // return để dừng luôn hành động
             }
             bool add = _service.AddNewChild(name, age, address, sex, parentID);
@@ -120,17 +138,18 @@ namespace C_PRL.Forms
         {
             DialogResult = MessageBox.Show("Bạn có muốn xóa không?", "Xác nhận",
                 MessageBoxButtons.YesNoCancel);
-            if(DialogResult == DialogResult.Yes)
+            if (DialogResult == DialogResult.Yes)
             {
                 // Lấy được ID cần xóa => Cột đã bị ẩn của datagridview 
                 var deleteResult = _service.DeleteChild(selectedID);
                 if (deleteResult) MessageBox.Show("Xóa thành công");
                 else MessageBox.Show("Thất bại");
                 LoadData(_service.GetAllChild());
-            }else
+            }
+            else
             {
                 return;
-            }        
+            }
         }
 
         private void btn_Edit_Click(object sender, EventArgs e)
