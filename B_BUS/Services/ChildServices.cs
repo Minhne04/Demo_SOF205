@@ -69,9 +69,11 @@ namespace B_BUS.Services
                            on child.ParentId equals parent.ParentId
                            select new
                            {
+                               ChildId = child.ChildId,
                                Name = child.Name,
                                Address = child.Address,
                                Age = child.Age,
+                               Sex = child.Sex,
                                ParentName = parent.Name
                            };
             return joinData.ToList();
@@ -90,6 +92,13 @@ namespace B_BUS.Services
                                ParentName = parent.Name
                            };
             return joinData.ToList();
+            // var - dynamic - generic là 3 phạm trù khác nhau
+            // var là từ khóa đánh dấu 1 biến có thể nhận mọi kiểu dữ liệu
+            // generic là phương pháp lập trình cho phép ta thao tác trên
+            // nhiều kiểu dữ liệu khác nhau nhưng cùng 1 cách thức
+            // dynamic là một kiểu dữ liệu linh hoạt có thể nhận các giá
+            // trị thuộc các kiểu dữ liệu tùy ý và có thể thay đổi kiểu dữ liệu trong quá trình
+            // mà chương trình đang chạy
         }
     }
 }

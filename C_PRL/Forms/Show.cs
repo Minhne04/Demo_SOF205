@@ -40,8 +40,10 @@ namespace C_PRL.Forms
             //                   Age = child.Age,
             //                   ParentName = parent.Name
             //               };
-            var joinData = _service.GetChildsWithParentName();
-            dtg_Show.DataSource = joinData;
+            var joinData2 = _service.GetChildsWithParentName();
+            var joinData3 = _service.GetChildModels();
+            LoadData(joinData3);
+            //dtg_Show.DataSource = joinData3;
             //dtg_Show.DataSource = _service.GetAllChild();
             //LoadData(_service.GetAllChild());
         }
@@ -51,21 +53,22 @@ namespace C_PRL.Forms
             dtg_Show.Rows.Clear();
             dtg_Show.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Auto kích cỡ
             int stt = 1; // đánh số thứ tự tự tăng
-            dtg_Show.ColumnCount = 6; // đánh xem datagrid view sẽ có bao nhiêu cột
+            dtg_Show.ColumnCount = 7; // đánh xem datagrid view sẽ có bao nhiêu cột
             // ĐỊnh dạng datagridview (Tên cột, Text hiển thị của cột
             dtg_Show.Columns[0].Name = "stt"; dtg_Show.Columns[0].HeaderText = "Số thứ tự";
             dtg_Show.Columns[1].Name = "name"; dtg_Show.Columns[1].HeaderText = "Tên";
             dtg_Show.Columns[2].Name = "age"; dtg_Show.Columns[2].HeaderText = "Tuổi";
             dtg_Show.Columns[3].Name = "address"; dtg_Show.Columns[3].HeaderText = "Địa chỉ";
             dtg_Show.Columns[4].Name = "sex"; dtg_Show.Columns[4].HeaderText = "Giới tính";
-            dtg_Show.Columns[5].Name = "id";
-            dtg_Show.Columns[5].Visible = false; // ẩn cột ID để không thấy
+            dtg_Show.Columns[5].Name = "parentName"; dtg_Show.Columns[5].HeaderText = "Tên cha mẹ";
+            dtg_Show.Columns[6].Name = "id";
+            dtg_Show.Columns[6].Visible = false; // ẩn cột ID để không thấy
             // dtg_Show.DataSource = _service.GetAllChild();
             // Đẩy data vào dtg
             foreach (var item in data)
             {
                 dtg_Show.Rows.Add(stt++, item.Name, item.Age, item.Address,
-                    item.Sex ? "Nam" : "Nữ", item.ChildId); // Dùng toán tử 3 ngôi để định giới tính
+                    item.Sex ? "Nam" : "Nữ",item.ParentName, item.Id); // Dùng toán tử 3 ngôi để định giới tính
             }
             // Dùng toán tử 3 ngôi để định giới tính
         }
@@ -102,7 +105,8 @@ namespace C_PRL.Forms
             tbt_Name.Text = selectedChild.Cells[1].Value.ToString();
             tbt_Age.Text = selectedChild.Cells[2].Value.ToString();
             tbt_Address.Text = selectedChild.Cells[3].Value.ToString();
-            selectedID = Convert.ToInt32(selectedChild.Cells[5].Value); // Lấy ID khi select 1 row mình chọn
+            cbb_Parent.Text = selectedChild.Cells[5].Value.ToString();  
+            selectedID = Convert.ToInt32(selectedChild.Cells[6].Value); // Lấy ID khi select 1 row mình chọn
             if (selectedChild.Cells[4].Value.ToString() == "Nam")
             {
                 rb_Male.Checked = true; rb_Female.Checked = false;
